@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnHub - Online Learning Platform</title>
+    
+    <!-- Google Analytics 4 -->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'GA_MEASUREMENT_ID', {
+            page_title: 'LearnHub LMS',
+            page_location: window.location.href
+        });
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            padding: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 15px 0;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 0;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            display: block;
+            transition: background-color 0.3s;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: #4CAF50;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #4CAF50;
+        }
+
+        .btn-primary:hover {
+            background: #f0f0f0;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Course Grid */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .course-image {
+            height: 180px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-content {
+            padding: 20px;
+        }
+
+        .course-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .course-instructor {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .course-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .course-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .stars {
+            color: #ffc107;
+        }
+
+        .course-students {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .course-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .course-price {
+            font-size: 18px;
+            font-weight: 600;
+            color: #4CAF50;
+        }
+
+        .course-price.free {
+            color: #2196F3;
+        }
+
+        .course-price.private {
+            color: #9C27B0;
+        }
+
+        .enroll-btn {
+            padding: 8px 16px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .enroll-btn:hover {
+            background: #45a049;
+        }
+
+        .enroll-btn.free {
+            background: #2196F3;
+        }
+
+        .enroll-btn.free:hover {
+            background: #1976D2;
+        }
+
+        .enroll-btn.private {
+            background: #9C27B0;
+        }
+
+        .enroll-btn.private:hover {
+            background: #7B1FA2;
+        }
+
+        /* Auth Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-header h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        .btn-full {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .switch-auth {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .switch-auth a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        .switch-auth a:hover {
+            text-decoration: underline;
+        }
+
+        /* Page States */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .welcome-section h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .welcome-section p {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        /* Course Icons */
+        .course-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .welcome-section h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">LearnHub</div>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active" data-page="home">HOME</a></li>
+                <li><a href="#" class="nav-link" data-page="courses">COURSES</a></li>
+                <li><a href="#" class="nav-link" data-page="pages">PAGES</a></li>
+                <li><a href="#" class="nav-link" data-page="blog">BLOG/PRESS</a></li>
+                <li><a href="#" class="nav-link" data-page="business">BUSINESS</a></li>
+                <li><a href="#" class="nav-link" data-page="contact">CONTACT</a></li>
+            </ul>
+            <div class="auth-buttons" id="authButtons">
+                <a href="#" class="btn btn-outline" onclick="showLogin()">Login</a>
+                <a href="#" class="btn btn-primary" onclick="showSignup()">Sign Up</a>
+            </div>
+            <div class="user-info" id="userInfo" style="display: none;">
+                <span style="color: white; margin-right: 15px;">Welcome, <span id="userName"></span></span>
+                <a href="#" class="btn btn-outline" onclick="logout()">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Home Page -->
+        <div id="homePage" class="page active">
+            <div class="welcome-section">
+                <h1>Welcome to LearnHub</h1>
+                <p>Discover amazing courses and expand your knowledge</p>
+            </div>
+
+            <!-- Courses Grid -->
+            <div class="courses-grid">
+                <!-- Course 1 -->
+                <div class="course-card">
+                    <div class="course-image" style="background: linear-gradient(135deg, #20B2AA, #008B8B);">
+                        <div class="course-icon">💻</div>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">How to write effectively</h3>
+                        <p class="course-instructor">CHARLIE</p>
+                        <div class="course-stats">
+                            <div class="course-rating">
+                                <span class="stars">★★★★☆</span>
+                                <span>4.0</span>
+                            </div>
+                            <div class="course-students">125 students</div>
+                        </div>
+                        <div class="course-footer">
+                            <span class="course-price free">FREE</span>
+                            <button class="enroll-btn free">Enroll Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 2 -->
+                <div class="course-card">
+                    <div class="course-image" style="background: linear-gradient(135deg, #FFB000, #FF8C00);">
+                        <div class="course-icon">📸</div>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">Digital Photography</h3>
+                        <p class="course-instructor">CHARLIE</p>
+                        <div class="course-stats">
+                            <div class="course-rating">
+                                <span class="stars">★★★★★</span>
+                                <span>5.0</span>
+                            </div>
+                            <div class="course-students">89 students</div>
+                        </div>
+                        <div class="course-footer">
+                            <span class="course-price">£15.00 per 3 weeks</span>
+                            <button class="enroll-btn">Apply to enroll</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 3 -->
+                <div class="course-card">
+                    <div class="course-image" style="background: linear-gradient(135deg, #DEB887, #CD853F);">
+                        <div class="course-icon">🖥️</div>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">Software Training</h3>
+                        <p class="course-instructor">CHARLIE</p>
+                        <div class="course-stats">
+                            <div class="course-rating">
+                                <span class="stars">★★★★☆</span>
+                                <span>4.2</span>
+                            </div>
+                            <div class="course-students">156 students</div>
+                        </div>
+                        <div class="course-footer">
+                            <span class="course-price">£25.00 per week</span>
+                            <button class="enroll-btn">Enroll Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 4 -->
+                <div class="course-card">
+                    <div class="course-image" style="background: linear-gradient(135deg, #2F2F2F, #1C1C1C);">
+                        <div class="course-icon">👩‍💼</div>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">Offline course 111</h3>
+                        <p class="course-instructor">INSTRUCTOR</p>
+                        <div class="course-stats">
+                            <div class="course-rating">
+                                <span class="stars">★★★★★</span>
+                                <span>4.8</span>
+                            </div>
+                            <div class="course-students">45 students</div>
+                        </div>
+                        <div class="course-footer">
+                            <span class="course-price private">PRIVATE</span>
+                            <button class="enroll-btn private">Contact</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 5 -->
+                <div class="course-card">
+                    <div class="course-image" style="background: linear-gradient(135deg, #9ACD32, #7CB342);">
+                        <div class="course-icon">📱</div>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">Social Media Management</h3>
+                        <p class="course-instructor">CHARLIE</p>
+                        <div class="course-stats">
+                            <div class="course-rating">
+                                <span class="stars">★★★★☆</span>
+                                <span>4.1</span>
+                            </div>
+                            <div class="course-students">203 students</div>
+                        </div>
+                        <div class="course-footer">
+                            <span class="course-price">£27.00 per 2 months</span>
+                            <button class="enroll-btn">Enroll Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 6 -->
+                <div class="course-card">
+                    <div class="course-image" style="background: linear-gradient(135deg, #FF9800, #F57C00);">
+                        <div class="course-icon">📷</div>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">Basics of Nature Photography</h3>
+                        <p class="course-instructor">CHARLIE</p>
+                        <div class="course-stats">
+                            <div class="course-rating">
+                                <span class="stars">★★★★★</span>
+                                <span>4.9</span>
+                            </div>
+                            <div class="course-students">178 students</div>
+                        </div>
+                        <div class="course-footer">
+                            <span class="course-price">£18.00 per 30 days</span>
+                            <button class="enroll-btn">Enroll Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 7 -->
+                <div class="course-card">
+                    <div class="course-image" style="background: linear-gradient(135deg, #8D6E63, #5D4037);">
+                        <div class="course-icon">📱</div>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">Developing Mobile Apps</h3>
+                        <p class="course-instructor">CHARLIE</p>
+                        <div class="course-stats">
+                            <div class="course-rating">
+                                <span class="stars">★★★★☆</span>
+                                <span>4.3</span>
+                            </div>
+                            <div class="course-students">92 students</div>
+                        </div>
+                        <div class="course-footer">
+                            <span class="course-price">£19.00 per week</span>
+                            <button class="enroll-btn">Enroll Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 8 -->
+                <div class="course-card">
+                    <div class="course-image" style="background: linear-gradient(135deg, #F44336, #D32F2F);">
+                        <div class="course-icon">📊</div>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">Marketing Management</h3>
+                        <p class="course-instructor">CHARLIE</p>
+                        <div class="course-stats">
+                            <div class="course-rating">
+                                <span class="stars">★★★★☆</span>
+                                <span>4.4</span>
+                            </div>
+                            <div class="course-students">267 students</div>
+                        </div>
+                        <div class="course-footer">
+                            <span class="course-price">£45.00 per 2 weeks</span>
+                            <button class="enroll-btn">Enroll Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other Pages (Placeholder) -->
+        <div id="coursesPage" class="page">
+            <h1>All Courses</h1>
+            <p>Browse all available courses here.</p>
+        </div>
+
+        <div id="pagesPage" class="page">
+            <h1>Pages</h1>
+            <p>Additional pages and resources.</p>
+        </div>
+
+        <div id="blogPage" class="page">
+            <h1>Blog & Press</h1>
+            <p>Latest news and articles.</p>
+        </div>
+
+        <div id="businessPage" class="page">
+            <h1>Business Solutions</h1>
+            <p>Corporate training and business courses.</p>
+        </div>
+
+        <div id="contactPage" class="page">
+            <h1>Contact Us</h1>
+            <p>Get in touch with our team.</p>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <div class="modal-header">
+                <h2>Login to LearnHub</h2>
+                <p>Welcome back! Please login to your account.</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Login</button>
+            </form>
+            <div class="switch-auth">
+                Don't have an account? <a href="#" onclick="switchToSignup()">Sign up here</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('signupModal')">&times;</span>
+            <div class="modal-header">
+                <h2>Join LearnHub</h2>
+                <p>Create your account and start learning today!</p>
+            </div>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+            </form>
+            <div class="switch-auth">
+                Already have an account? <a href="#" onclick="switchToLogin()">Login here</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // User state management
+        let currentUser = null;
+
+        // Google Analytics Event Tracking Functions
+        function trackEvent(eventName, parameters = {}) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', eventName, parameters);
+                console.log('GA Event tracked:', eventName, parameters);
+            }
+        }
+
+        function trackPageView(pageName) {
+            if (typeof gtag !== 'undefined') {
+                gtag('config', 'GA_MEASUREMENT_ID', {
+                    page_title: pageName,
+                    page_location: window.location.href + '#' + pageName
+                });
+                console.log('GA Page view tracked:', pageName);
+            }
+        }
+
+        function trackUserSignup(method = 'email') {
+            trackEvent('sign_up', {
+                method: method
+            });
+        }
+
+        function trackUserLogin(method = 'email') {
+            trackEvent('login', {
+                method: method
+            });
+        }
+
+        function trackCourseEnrollment(courseName, coursePrice, courseCategory = 'general') {
+            trackEvent('course_enrollment', {
+                course_name: courseName,
+                course_price: coursePrice,
+                course_category: courseCategory,
+                currency: 'GBP'
+            });
+        }
+
+        function trackCourseView(courseName, courseCategory = 'general') {
+            trackEvent('select_content', {
+                content_type: 'course',
+                content_id: courseName.toLowerCase().replace(/\s+/g, '_'),
+                course_name: courseName,
+                course_category: courseCategory
+            });
+        }
+
+        // Navigation functionality
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Update active nav link
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show corresponding page
+                const page = this.getAttribute('data-page');
+                showPage(page);
+                
+                // Track page view
+                trackPageView(page.charAt(0).toUpperCase() + page.slice(1) + ' Page');
+            });
+        });
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId + 'Page').classList.add('active');
+        }
+
+        // Modal functions
+        function showLogin() {
+            document.getElementById('loginModal').style.display = 'block';
+            trackEvent('login_attempt');
+        }
+
+        function showSignup() {
+            document.getElementById('signupModal').style.display = 'block';
+            trackEvent('signup_attempt');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function switchToSignup() {
+            closeModal('loginModal');
+            showSignup();
+        }
+
+        function switchToLogin() {
+            closeModal('signupModal');
+            showLogin();
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const loginModal = document.getElementById('loginModal');
+            const signupModal = document.getElementById('signupModal');
+            if (event.target === loginModal) {
+                closeModal('loginModal');
+            }
+            if (event.target === signupModal) {
+                closeModal('signupModal');
+            }
+        }
+
+        // Login form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Simple validation (in real app, this would be server-side)
+            if (email && password) {
+                currentUser = {
+                    email: email,
+                    name: email.split('@')[0] // Simple name extraction
+                };
+                
+                // Track successful login
+                trackUserLogin('email');
+                
+                // Set user properties in GA
+                gtag('config', 'GA_MEASUREMENT_ID', {
+                    user_id: currentUser.email,
+                    custom_map: {'custom_parameter_1': 'user_type'}
+                });
+                
+                // Update UI
+                document.getElementById('authButtons').style.display = 'none';
+                document.getElementById('userInfo').style.display = 'block';
+                document.getElementById('userName').textContent = currentUser.name;
+                
+                closeModal('loginModal');
+                alert('Login successful!');
+            }
+        });
+
+        // Signup form submission
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                trackEvent('signup_error', {
+                    error_type: 'password_mismatch'
+                });
+                return;
+            }
+            
+            if (name && email && password) {
+                currentUser = {
+                    email: email,
+                    name: name
+                };
+                
+                // Track successful signup
+                trackUserSignup('email');
+                
+                // Set user properties in GA
+                gtag('config', 'GA_MEASUREMENT_ID', {
+                    user_id: currentUser.email,
+                    custom_map: {'custom_parameter_1': 'user_type'}
+                });
+                
+                // Update UI
+                document.getElementById('authButtons').style.display = 'none';
+                document.getElementById('userInfo').style.display = 'block';
+                document.getElementById('userName').textContent = currentUser.name;
+                
+                closeModal('signupModal');
+                alert('Account created successfully!');
+            }
+        });
+
+        // Logout function
+        function logout() {
+            // Track logout event
+            trackEvent('logout');
+            
+            currentUser = null;
+            document.getElementById('authButtons').style.display = 'flex';
+            document.getElementById('userInfo').style.display = 'none';
+            alert('Logged out successfully!');
+        }
+
+        // Course enrollment
+        document.querySelectorAll('.enroll-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const courseCard = this.closest('.course-card');
+                const courseTitle = courseCard.querySelector('.course-title').textContent;
+                const coursePrice = courseCard.querySelector('.course-price').textContent;
+                
+                // Track course view
+                trackCourseView(courseTitle);
+                
+                if (!currentUser) {
+                    alert('Please login to enroll in courses!');
+                    trackEvent('enrollment_blocked', {
+                        course_name: courseTitle,
+                        reason: 'not_logged_in'
+                    });
+                    showLogin();
+                } else {
+                    // Track successful enrollment
+                    trackCourseEnrollment(courseTitle, coursePrice);
+                    alert(`Successfully enrolled in: ${courseTitle}`);
+                }
+            });
+        });
+
+        // Track course card hovers for engagement
+        document.querySelectorAll('.course-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                const courseTitle = this.querySelector('.course-title').textContent;
+                trackEvent('course_hover', {
+                    course_name: courseTitle
+                });
+            });
+        });
+
+        // Track initial page load
+        document.addEventListener('DOMContentLoaded', function() {
+            trackPageView('Home Page');
+        });
+    </script>
+</body>
+</html>
