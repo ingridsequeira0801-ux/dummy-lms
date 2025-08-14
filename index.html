@@ -30,6 +30,8 @@
     body { font-family: Arial, sans-serif; margin: 0; background: #f9f9f9; }
     header { background: #333; color: white; padding: 1rem; text-align: center; }
     main { padding: 2rem; max-width: 800px; margin: auto; background: white; }
+    .course-list { list-style: none; padding: 0; }
+    .course-list li { background: #eee; padding: 10px; margin-bottom: 8px; border-radius: 5px; }
   </style>
 </head>
 <body>
@@ -42,11 +44,16 @@
   <!-- End Google Tag Manager (noscript) -->
 
   <header>
-    <h1>Welcome to Dummy LMS</h1>
+    <h1>My LMS</h1>
   </header>
   <main>
-    <p>This is a sample LMS site deployed via GitHub Pages.</p>
-    <p>You can now track activity via Google Tag Manager and GA4.</p>
+    <h2>Available Courses</h2>
+    <ul class="course-list">
+      <li>Introduction to HTML & CSS</li>
+      <li>JavaScript Basics</li>
+      <li>Advanced React Development</li>
+      <li>Data Visualization with Looker Studio</li>
+    </ul>
   </main>
 
 </body>
