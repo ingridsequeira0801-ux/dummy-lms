@@ -6,21 +6,24 @@
   <title>LearnHub - Online Learning Platform</title>
 
   <!-- Google Tag Manager (head) -->
+  <!-- NOTE: If you also send GA4 events from GTM, remove the gtag block below or you'll double count. -->
   <script>
-  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-56V436M4');
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-56V436M4');
   </script>
 
-  <!-- Google tag (gtag.js) -->
+  <!-- Google tag (gtag.js) — direct GA4 (remove if you fire GA4 from GTM) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-KN0JLE9TWG"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag(){ dataLayer.push(arguments); }
     gtag('js', new Date());
-    gtag('config', 'G-KN0JLE9TWG');
+
+    // SPA: disable automatic page_view so we can control it on navigation
+    gtag('config', 'G-KN0JLE9TWG', { send_page_view: false });
   </script>
 
   <style>
@@ -37,12 +40,12 @@
     }
     *{box-sizing:border-box}
     body{font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; margin:0; background:var(--muted); color:#222}
-    
+
     /* UTILITY */
     .hidden{display:none !important}
     .fade-in{animation:fadeIn 0.3s ease-in}
     @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-    
+
     /* NAV */
     .navbar{background:linear-gradient(90deg,var(--green),var(--green-dark)); box-shadow:0 3px 8px rgba(0,0,0,0.08);}
     .nav-inner{max-width:var(--maxwidth); margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:10px 20px;}
@@ -132,7 +135,7 @@
 
     /* BREADCRUMB */
     .breadcrumb{display:flex; align-items:center; gap:10px; margin-bottom:20px; color:#666; font-size:14px}
-    .breadcrumb a{color:var(--accent); text-decoration:none}
+    .breadcrumb a{color:#2196F3; text-decoration:none}
     .breadcrumb span{margin:0 5px}
 
     /* SUCCESS MESSAGES */
@@ -192,9 +195,7 @@
       <p>Browse our complete catalog of courses</p>
     </section>
     <main class="container">
-      <div class="courses-grid" id="allCoursesGrid">
-        <!-- All courses will be shown here -->
-      </div>
+      <div class="courses-grid" id="allCoursesGrid"></div>
     </main>
   </div>
 
@@ -202,17 +203,17 @@
   <div id="courseDetailPage" class="page hidden">
     <main class="container">
       <nav class="breadcrumb">
-        <a onclick="showPage('home')">Home</a> <span>></span> 
+        <a onclick="showPage('home')">Home</a> <span>></span>
         <a onclick="showPage('courses')">Courses</a> <span>></span>
         <span id="courseDetailBreadcrumb">Course Details</span>
       </nav>
-      
+
       <div class="course-detail">
         <div class="course-hero" id="courseDetailHero">
           <h1 id="courseDetailTitle">Course Title</h1>
           <p id="courseDetailInstructor">By Instructor</p>
         </div>
-        
+
         <div class="course-content">
           <div class="course-meta">
             <div class="meta-item">
@@ -229,22 +230,20 @@
             </div>
             <div class="meta-item">
               <div class="meta-label">Price</div>
-              <div class="meta-value" id="courseDetailPrice">Rs0</div>
+              <div class="meta-value" id="courseDetailPrice">£0</div>
             </div>
           </div>
-          
+
           <div class="course-description">
             <h3>About This Course</h3>
             <p id="courseDetailDescription">This comprehensive course will teach you everything you need to know...</p>
           </div>
-          
+
           <div class="course-curriculum">
             <h3>Curriculum</h3>
-            <div id="curriculumList">
-              <!-- Dynamic curriculum items -->
-            </div>
+            <div id="curriculumList"></div>
           </div>
-          
+
           <div style="text-align:center; margin-top:30px">
             <button class="btn btn-success" style="padding:15px 30px; font-size:18px" onclick="proceedToCheckout()" id="enrollMainBtn">
               Enroll Now
@@ -263,9 +262,9 @@
         <a onclick="showPage('courses')">Courses</a> <span>></span>
         <span>Checkout</span>
       </nav>
-      
+
       <h2>Checkout</h2>
-      
+
       <div style="display:grid; grid-template-columns:1fr 400px; gap:30px">
         <div>
           <div class="checkout-summary">
@@ -292,7 +291,7 @@
             </form>
           </div>
         </div>
-        
+
         <div class="checkout-summary">
           <h3>Order Summary</h3>
           <div class="summary-item">
@@ -336,7 +335,7 @@
   <div id="dashboardPage" class="page hidden">
     <main class="container">
       <h2>My Learning Dashboard</h2>
-      
+
       <div class="dashboard-grid">
         <div class="stat-card">
           <div class="stat-number" id="enrolledCoursesCount">0</div>
@@ -357,9 +356,7 @@
       </div>
 
       <h3>My Courses</h3>
-      <div id="myCoursesList">
-        <!-- User's enrolled courses will be displayed here -->
-      </div>
+      <div id="myCoursesList"></div>
     </main>
   </div>
 
@@ -420,11 +417,15 @@
   </div>
 
   <script>
-    // Global state
+    /* =========================
+       GLOBAL STATE & HELPERS
+       ========================= */
     let currentUser = null;
     let enrolledCourses = [];
     let currentCourse = null;
-    
+
+    const CURRENCY = 'GBP';
+
     // Course data
     const courses = [
       {
@@ -432,6 +433,7 @@
         name: "How to write effectively",
         instructor: "CHARLIE",
         price: "FREE",
+        priceNum: 0,
         rating: 4.0,
         students: 125,
         duration: "2 weeks",
@@ -449,12 +451,12 @@
         id: 2,
         name: "Digital Photography",
         instructor: "CHARLIE",
-        price: "Rs15.00 per 3 weeks",
+        price: "Rs. 15.00 per 3 weeks",
         priceNum: 15,
         rating: 5.0,
         students: 89,
         duration: "3 weeks",
-        description: "Capture stunning photos with your digital camera. Learn composition, lighting, and post-processing techniques from professional photographers.",
+        description: "Capture stunning photos with your digital camera. Learn composition, lighting, and post-processing techniques from professionals.",
         emoji: "📸",
         gradient: "linear-gradient(135deg,#FFB000,#FF8C00)",
         curriculum: [
@@ -468,12 +470,12 @@
         id: 3,
         name: "Software Training",
         instructor: "CHARLIE",
-        price: "Rs25.00 per week",
+        price: "Rs. 25.00 per week",
         priceNum: 25,
         rating: 4.2,
         students: 156,
         duration: "4 weeks",
-        description: "Comprehensive software training covering industry-standard applications. Perfect for beginners and professionals looking to upgrade their skills.",
+        description: "Comprehensive software training covering industry-standard applications. Perfect for beginners and pros looking to upgrade their skills.",
         emoji: "🖥️",
         gradient: "linear-gradient(135deg,#DEB887,#CD853F)",
         curriculum: [
@@ -487,12 +489,12 @@
         id: 4,
         name: "Social Media Management",
         instructor: "CHARLIE",
-        price: "Rs27.00 per 2 months",
+        price: "Rs. 27.00 per 2 months",
         priceNum: 27,
         rating: 4.1,
         students: 203,
         duration: "8 weeks",
-        description: "Build and manage successful social media campaigns. Learn content creation, audience engagement, and analytics across all major platforms.",
+        description: "Build and manage successful social media campaigns. Learn content creation, audience engagement, and analytics across major platforms.",
         emoji: "📱",
         gradient: "linear-gradient(135deg,#9ACD32,#7CB342)",
         curriculum: [
@@ -506,12 +508,12 @@
         id: 5,
         name: "Basics of Nature Photography",
         instructor: "CHARLIE",
-        price: "Rs18.00 per 30 days",
+        price: "Rs. 18.00 per 30 days",
         priceNum: 18,
         rating: 4.9,
         students: 178,
         duration: "4 weeks",
-        description: "Discover the beauty of nature through your lens. Learn landscape, wildlife, and macro photography techniques in natural settings.",
+        description: "Discover the beauty of nature through your lens. Learn landscape, wildlife, and macro techniques in natural settings.",
         emoji: "📷",
         gradient: "linear-gradient(135deg,#FF9800,#F57C00)",
         curriculum: [
@@ -523,62 +525,63 @@
       }
     ];
 
-    // Utility functions
-    window.dataLayer = window.dataLayer || [];
-    
-    function pushEventToDataLayer(eventName, payload) {
-      const obj = Object.assign({ event: eventName }, payload || {});
-      window.dataLayer.push(obj);
-      if (typeof gtag === 'function') {
-        try {
-          gtag('event', eventName, payload || {});
-        } catch(e) { /* ignore */ }
-      }
-      console.log('Pushed to dataLayer:', obj);
+    // Build GA4-compliant item from course
+    function itemFromCourse(course) {
+      return {
+        item_id: String(course.id),
+        item_name: course.name,
+        item_category: 'Course',
+        price: course.priceNum || 0,
+        currency: CURRENCY
+      };
     }
 
-    // Page navigation
+    // SPA page view tracking
+    function trackPageView(pageId, titleOverride) {
+      const title = titleOverride || (pageId.charAt(0).toUpperCase() + pageId.slice(1)) + ' | LearnHub';
+      const path = '/' + pageId;
+
+      gtag('event', 'page_view', {
+        page_title: title,
+        page_location: window.location.origin + path,
+        page_path: path
+      });
+    }
+
+    /* =========================
+       PAGE NAVIGATION
+       ========================= */
     function showPage(pageId) {
-      // Hide all pages
-      document.querySelectorAll('.page').forEach(page => {
-        page.classList.add('hidden');
-      });
-      
-      // Show target page
-      const targetPage = document.getElementById(pageId + 'Page');
-      if (targetPage) {
-        targetPage.classList.remove('hidden');
-        targetPage.classList.add('fade-in');
+      document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+
+      const target = document.getElementById(pageId + 'Page');
+      if (target) {
+        target.classList.remove('hidden');
+        target.classList.add('fade-in');
       }
-      
-      // Update nav active state
-      document.querySelectorAll('.nav-links a').forEach(link => {
-        link.classList.remove('active');
-      });
+
+      document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
       const activeLink = document.querySelector(`[data-page="${pageId}"]`);
-      if (activeLink) {
-        activeLink.classList.add('active');
-      }
-      
-      // Track page view
-      pushEventToDataLayer('page_view', {
-        page_name: pageId,
-        page_location: window.location.href + '#' + pageId
-      });
-      
-      // Load page-specific content
+      if (activeLink) activeLink.classList.add('active');
+
+      // Page-specific content
       if (pageId === 'home' || pageId === 'courses') {
         loadCourses(pageId === 'courses');
       }
+
+      // Track page view
+      trackPageView(pageId);
     }
 
-    // Course loading and rendering
+    /* =========================
+       RENDER COURSES
+       ========================= */
     function loadCourses(showAll = false) {
       const grid = showAll ? document.getElementById('allCoursesGrid') : document.getElementById('coursesGrid');
       const coursesToShow = showAll ? courses : courses.slice(0, 3);
-      
+
       grid.innerHTML = coursesToShow.map(course => `
-        <article class="card" data-course-id="${course.id}" data-course-name="${course.name}" data-course-price="${course.price}">
+        <article class="card" data-course-id="${course.id}">
           <div class="card-media" style="background:${course.gradient};">${course.emoji}</div>
           <div class="card-body">
             <div class="card-title">${course.name}</div>
@@ -596,84 +599,75 @@
           </div>
         </article>
       `).join('');
-      
-      // Attach event listeners
-      attachCourseEventListeners();
+
+      attachCourseEventListeners(showAll ? 'all_courses' : 'home_courses');
     }
 
-    function attachCourseEventListeners() {
-      // Card click events
+    function attachCourseEventListeners(listId) {
       document.querySelectorAll('.card').forEach(card => {
         card.addEventListener('click', function(e) {
-          if (e.target.closest('button')) return; // Don't trigger if button clicked
-          
-          const courseId = parseInt(card.dataset.courseId);
-          const courseName = card.dataset.courseName;
-          const coursePrice = card.dataset.coursePrice;
-          
-          pushEventToDataLayer('course_selected', {
-            course_id: courseId,
-            course_name: courseName,
-            course_price: coursePrice,
-            page_location: window.location.href
+          if (e.target.closest('button')) return;
+          const id = parseInt(card.getAttribute('data-course-id'));
+          const course = courses.find(c => c.id === id);
+          if (!course) return;
+
+          // GA4: select_item
+          gtag('event', 'select_item', {
+            item_list_id: listId,
+            items: [ itemFromCourse(course) ]
           });
-          
-          showCourseDetail(courseId);
+
+          showCourseDetail(id);
         });
       });
-      
-      // Button click events
+
       document.querySelectorAll('[data-action="enroll"]').forEach(btn => {
         btn.addEventListener('click', function(e) {
           e.stopPropagation();
-          const courseId = parseInt(btn.dataset.courseId);
-          const course = courses.find(c => c.id === courseId);
-          
-          if (course.price === 'FREE') {
-            pushEventToDataLayer('course_enroll_attempt', {
-              course_id: courseId,
-              course_name: course.name,
-              course_price: course.price,
-              method: 'quick_enroll'
+          const id = parseInt(btn.getAttribute('data-course-id'));
+          const course = courses.find(c => c.id === id);
+          if (!course) return;
+
+          if (course.priceNum && course.priceNum > 0) {
+            // Paid: go to detail (view_item will fire there)
+            showCourseDetail(id);
+          } else {
+            // Free: track click + proceed
+            gtag('event', 'add_to_cart', {
+              currency: CURRENCY,
+              value: 0,
+              items: [ itemFromCourse(course) ]
             });
-            
+
             if (currentUser) {
-              enrollInCourse(courseId);
+              enrollInCourse(id);
             } else {
-              // Show login modal
               openLogin();
             }
-          } else {
-            showCourseDetail(courseId);
           }
         });
       });
     }
 
-    // Course detail page
+    /* =========================
+       COURSE DETAIL / CHECKOUT
+       ========================= */
     function showCourseDetail(courseId) {
       const course = courses.find(c => c.id === courseId);
       if (!course) return;
-      
       currentCourse = course;
-      
-      // Update breadcrumb
+
       document.getElementById('courseDetailBreadcrumb').textContent = course.name;
-      
-      // Update hero section
       const hero = document.getElementById('courseDetailHero');
       hero.style.background = course.gradient;
       document.getElementById('courseDetailTitle').textContent = course.name;
       document.getElementById('courseDetailInstructor').textContent = `By ${course.instructor}`;
-      
-      // Update meta information
       document.getElementById('courseDetailRating').textContent = `${course.rating} ⭐`;
       document.getElementById('courseDetailStudents').textContent = course.students;
       document.getElementById('courseDetailDuration').textContent = course.duration;
       document.getElementById('courseDetailPrice').textContent = course.price;
       document.getElementById('courseDetailDescription').textContent = course.description;
-      
-      // Update curriculum
+
       const curriculumList = document.getElementById('curriculumList');
       curriculumList.innerHTML = course.curriculum.map(item => `
         <div class="curriculum-item">
@@ -681,281 +675,131 @@
           <div class="curriculum-duration">${item.duration}</div>
         </div>
       `).join('');
-      
-      // Update enroll button
+
       const enrollBtn = document.getElementById('enrollMainBtn');
-      if (course.price === 'FREE') {
-        enrollBtn.textContent = 'Enroll Now';
-        enrollBtn.onclick = () => {
-          if (currentUser) {
-            enrollInCourse(courseId);
-          } else {
-            openLogin();
-          }
-        };
-      } else {
+      if (course.priceNum && course.priceNum > 0) {
         enrollBtn.textContent = 'Proceed to Checkout';
         enrollBtn.onclick = () => proceedToCheckout();
+      } else {
+        enrollBtn.textContent = 'Enroll Now';
+        enrollBtn.onclick = () => currentUser ? enrollInCourse(course.id) : openLogin();
       }
-      
+
       showPage('courseDetail');
-      
-      // Track course view
-      pushEventToDataLayer('course_view', {
-        course_id: courseId,
-        course_name: course.name,
-        course_price: course.price,
-        page_location: window.location.href
-      });
+
+      // GA4: view_item
+      gtag('event', 'view_item', { items: [ itemFromCourse(course) ] });
     }
 
-    // Checkout process
     function proceedToCheckout() {
       if (!currentCourse) return;
-      
-      if (!currentUser) {
-        openLogin();
-        return;
-      }
-      
-      if (currentCourse.price === 'FREE') {
+      if (!currentUser) { openLogin(); return; }
+      if (!currentCourse.priceNum || currentCourse.priceNum === 0) {
         enrollInCourse(currentCourse.id);
         return;
       }
-      
-      // Update checkout page
+
       document.getElementById('checkoutCourseName').textContent = currentCourse.name;
-      document.getElementById('checkoutCoursePrice').textContent = currentCourse.price;
-      
-      // Calculate VAT and total
-      const price = currentCourse.priceNum || 0;
+      document.getElementById('checkoutCoursePrice').textContent = `£${(currentCourse.priceNum).toFixed(2)}`;
+
+      const price = currentCourse.priceNum;
       const vat = Math.round(price * 0.2 * 100) / 100;
       const total = Math.round((price + vat) * 100) / 100;
-      
+
       document.getElementById('checkoutVAT').textContent = `£${vat.toFixed(2)}`;
       document.getElementById('checkoutTotal').textContent = `£${total.toFixed(2)}`;
-      
-      // Pre-fill email if user is logged in
+
       if (currentUser) {
-        document.getElementById('checkoutEmail').value = currentUser.email;
+        document.getElementById('checkoutEmail').value = currentUser.email || '';
       }
-      
+
       showPage('checkout');
-      
-      // Track checkout initiation
-      pushEventToDataLayer('begin_checkout', {
-        course_id: currentCourse.id,
-        course_name: currentCourse.name,
+
+      // GA4: begin_checkout
+      gtag('event', 'begin_checkout', {
+        currency: CURRENCY,
         value: total,
-        currency: 'GBP'
+        items: [ itemFromCourse(currentCourse) ]
       });
     }
 
     function completePayment() {
       if (!currentCourse) return;
-      
-      // Validate form (basic validation)
       const form = document.getElementById('checkoutForm');
-      if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
-      }
-      
-      // Track payment attempt
-      const price = currentCourse.priceNum || 0;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+
+      const price = currentCourse.priceNum;
       const total = Math.round(price * 1.2 * 100) / 100;
-      
-      pushEventToDataLayer('purchase_attempt', {
-        course_id: currentCourse.id,
-        course_name: currentCourse.name,
+
+      // GA4: add_payment_info
+      gtag('event', 'add_payment_info', {
+        currency: CURRENCY,
         value: total,
-        currency: 'GBP'
+        payment_type: 'card',
+        items: [ itemFromCourse(currentCourse) ]
       });
-      
-      // Simulate payment processing
+
+      // Simulate payment then purchase
       setTimeout(() => {
-        // Track successful purchase
-        pushEventToDataLayer('purchase', {
-          transaction_id: 'txn_' + Date.now(),
-          course_id: currentCourse.id,
-          course_name: currentCourse.name,
+        const txnId = 'txn_' + Date.now();
+
+        // GA4: purchase
+        gtag('event', 'purchase', {
+          transaction_id: txnId,
+          currency: CURRENCY,
           value: total,
-          currency: 'GBP'
+          items: [ itemFromCourse(currentCourse) ]
         });
-        
-        // Enroll user in course
+
         enrollInCourse(currentCourse.id);
-        
-        // Show success page
+
         document.getElementById('successCourseName').textContent = currentCourse.name;
         showPage('success');
-      }, 1500);
+      }, 800);
     }
 
-    // Enrollment
+    /* =========================
+       ENROLLMENT / DASHBOARD
+       ========================= */
     function enrollInCourse(courseId) {
       const course = courses.find(c => c.id === courseId);
       if (!course || !currentUser) return;
-      
-      // Add to enrolled courses if not already enrolled
+
       if (!enrolledCourses.find(c => c.id === courseId)) {
-        enrolledCourses.push({
-          ...course,
-          enrolledAt: new Date(),
-          progress: 0,
-          completed: false
-        });
-        
-        // Track enrollment
-        pushEventToDataLayer('course_enrolled', {
-          course_id: courseId,
+        enrolledCourses.push({ ...course, enrolledAt: new Date(), progress: 0, completed: false });
+
+        // Custom: course_enrolled (kept for clarity, purchase already sent for paid)
+        gtag('event', 'course_enrolled', {
+          course_id: course.id,
           course_name: course.name,
-          course_price: course.price,
-          enrollment_method: course.price === 'FREE' ? 'free' : 'paid'
+          enrollment_method: (course.priceNum && course.priceNum > 0) ? 'paid' : 'free'
         });
-        
-        // Update dashboard stats
+
         updateDashboardStats();
-        
-        // Show success message or redirect
-        if (course.price === 'FREE') {
+
+        if (!course.priceNum || course.priceNum === 0) {
           document.getElementById('successCourseName').textContent = course.name;
           showPage('success');
         }
       }
     }
 
-    // Authentication
-    function openLogin() {
-      document.getElementById('loginModal').classList.remove('hidden');
-      pushEventToDataLayer('login_modal_opened', {
-        trigger: 'enrollment_required'
-      });
-    }
-
-    function openSignup() {
-      document.getElementById('signupModal').classList.remove('hidden');
-      pushEventToDataLayer('signup_modal_opened', {});
-    }
-
-    function closeModal(modalId) {
-      document.getElementById(modalId).classList.add('hidden');
-      pushEventToDataLayer('modal_closed', { modal_id: modalId });
-    }
-
-    function performLogin() {
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginPassword').value;
-      
-      if (!email || !password) return;
-      
-      // Simulate login (in real app, this would be an API call)
-      currentUser = {
-        id: 1,
-        email: email,
-        name: email.split('@')[0],
-        joinedAt: new Date()
-      };
-      
-      updateAuthUI();
-      closeModal('loginModal');
-      
-      pushEventToDataLayer('login', {
-        method: 'email',
-        user_id: currentUser.id
-      });
-      
-      // If there was a course they wanted to enroll in, proceed
-      if (currentCourse) {
-        if (currentCourse.price === 'FREE') {
-          enrollInCourse(currentCourse.id);
-        } else {
-          proceedToCheckout();
-        }
-      }
-    }
-
-    function performSignup() {
-      const name = document.getElementById('signupName').value;
-      const email = document.getElementById('signupEmail').value;
-      const password = document.getElementById('signupPassword').value;
-      
-      if (!name || !email || !password) return;
-      
-      // Simulate signup
-      currentUser = {
-        id: Date.now(),
-        email: email,
-        name: name,
-        joinedAt: new Date()
-      };
-      
-      updateAuthUI();
-      closeModal('signupModal');
-      
-      pushEventToDataLayer('sign_up', {
-        method: 'email',
-        user_id: currentUser.id
-      });
-      
-      // Show welcome message or proceed with enrollment
-      if (currentCourse) {
-        if (currentCourse.price === 'FREE') {
-          enrollInCourse(currentCourse.id);
-        } else {
-          proceedToCheckout();
-        }
-      }
-    }
-
-    function logout() {
-      currentUser = null;
-      enrolledCourses = [];
-      updateAuthUI();
-      showPage('home');
-      
-      pushEventToDataLayer('logout', {});
-    }
-
-    function updateAuthUI() {
-      const loginBtn = document.getElementById('loginBtn');
-      const signupBtn = document.getElementById('signupBtn');
-      const dashboardBtn = document.getElementById('dashboardBtn');
-      const logoutBtn = document.getElementById('logoutBtn');
-      
-      if (currentUser) {
-        loginBtn.classList.add('hidden');
-        signupBtn.classList.add('hidden');
-        dashboardBtn.classList.remove('hidden');
-        logoutBtn.classList.remove('hidden');
-      } else {
-        loginBtn.classList.remove('hidden');
-        signupBtn.classList.remove('hidden');
-        dashboardBtn.classList.add('hidden');
-        logoutBtn.classList.add('hidden');
-      }
-    }
-
-    // Dashboard
     function updateDashboardStats() {
       document.getElementById('enrolledCoursesCount').textContent = enrolledCourses.length;
       document.getElementById('completedCoursesCount').textContent = enrolledCourses.filter(c => c.completed).length;
-      document.getElementById('totalHoursCount').textContent = enrolledCourses.length * 4; // Rough estimate
-      
-      // Update course list
-      const coursesList = document.getElementById('myCoursesList');
+      document.getElementById('totalHoursCount').textContent = enrolledCourses.length * 4;
+
+      const list = document.getElementById('myCoursesList');
       if (enrolledCourses.length === 0) {
-        coursesList.innerHTML = '<p>No courses enrolled yet. <a onclick="showPage(\'courses\')">Browse courses</a> to get started!</p>';
+        list.innerHTML = '<p>No courses enrolled yet. <a onclick="showPage(\'courses\')">Browse courses</a> to get started!</p>';
       } else {
-        coursesList.innerHTML = enrolledCourses.map(course => `
+        list.innerHTML = enrolledCourses.map(course => `
           <div class="course-detail" style="margin-bottom:20px">
             <div style="padding:20px; display:flex; justify-content:space-between; align-items:center">
               <div>
                 <h3>${course.name}</h3>
                 <p style="color:#666; margin:5px 0">by ${course.instructor}</p>
-                <div class="progress-bar">
-                  <div class="progress-fill" style="width:${course.progress}%"></div>
-                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:${course.progress}%"></div></div>
                 <small style="color:#666">${course.progress}% completed</small>
               </div>
               <button class="btn btn-success" onclick="startLearning(${course.id})">
@@ -970,53 +814,116 @@
     function startLearning(courseId) {
       const course = enrolledCourses.find(c => c.id === courseId);
       if (!course) return;
-      
-      pushEventToDataLayer('course_learning_started', {
+
+      gtag('event', 'course_learning_started', {
         course_id: courseId,
         course_name: course.name
       });
-      
-      // Simulate progress
+
       course.progress = Math.min(100, course.progress + 25);
       if (course.progress === 100) {
         course.completed = true;
-        pushEventToDataLayer('course_completed', {
+        gtag('event', 'course_completed', {
           course_id: courseId,
           course_name: course.name
         });
       }
-      
       updateDashboardStats();
     }
 
-    // Initialize app
-    document.addEventListener('DOMContentLoaded', function() {
-      // Load home page
-      showPage('home');
-      
-      // Track initial page view
-      pushEventToDataLayer('page_view_custom', {
-        page_title: document.title,
-        page_location: window.location.href
-      });
-      
-      // Add click listeners to modals for closing when clicking outside
-      document.querySelectorAll('.modal').forEach(modal => {
-        modal.addEventListener('click', function(e) {
-          if (e.target === modal) {
-            closeModal(modal.id);
-          }
-        });
-      });
-    });
+    /* =========================
+       AUTH
+       ========================= */
+    function openLogin() {
+      document.getElementById('loginModal').classList.remove('hidden');
+      gtag('event', 'login_modal_opened', { trigger: 'required_for_enrollment' });
+    }
 
-    // Additional pages (blog, business, contact) - simplified versions
-    document.addEventListener('DOMContentLoaded', function() {
-      // Create additional pages
-      const additionalPages = [
+    function openSignup() {
+      document.getElementById('signupModal').classList.remove('hidden');
+      gtag('event', 'signup_modal_opened');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+      gtag('event', 'modal_closed', { modal_id: id });
+    }
+
+    function performLogin() {
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      if (!email || !password) return;
+
+      currentUser = { id: Date.now(), email, name: email.split('@')[0], joinedAt: new Date() };
+      updateAuthUI();
+      closeModal('loginModal');
+
+      // GA4: login + user_id + user properties
+      gtag('event', 'login', { method: 'email' });
+      gtag('config', 'G-KN0JLE9TWG', { user_id: String(currentUser.id) });
+      gtag('set', 'user_properties', { user_name: currentUser.name });
+
+      if (currentCourse) {
+        if (!currentCourse.priceNum || currentCourse.priceNum === 0) enrollInCourse(currentCourse.id);
+        else proceedToCheckout();
+      }
+    }
+
+    function performSignup() {
+      const name = document.getElementById('signupName').value;
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+      if (!name || !email || !password) return;
+
+      currentUser = { id: Date.now(), email, name, joinedAt: new Date() };
+      updateAuthUI();
+      closeModal('signupModal');
+
+      // GA4: sign_up + user_id + user properties
+      gtag('event', 'sign_up', { method: 'email' });
+      gtag('config', 'G-KN0JLE9TWG', { user_id: String(currentUser.id) });
+      gtag('set', 'user_properties', { user_name: currentUser.name });
+
+      if (currentCourse) {
+        if (!currentCourse.priceNum || currentCourse.priceNum === 0) enrollInCourse(currentCourse.id);
+        else proceedToCheckout();
+      }
+    }
+
+    function logout() {
+      currentUser = null;
+      enrolledCourses = [];
+      updateAuthUI();
+      showPage('home');
+      gtag('event', 'logout');
+    }
+
+    function updateAuthUI() {
+      const loginBtn = document.getElementById('loginBtn');
+      const signupBtn = document.getElementById('signupBtn');
+      const dashboardBtn = document.getElementById('dashboardBtn');
+      const logoutBtn = document.getElementById('logoutBtn');
+
+      if (currentUser) {
+        loginBtn.classList.add('hidden');
+        signupBtn.classList.add('hidden');
+        dashboardBtn.classList.remove('hidden');
+        logoutBtn.classList.remove('hidden');
+      } else {
+        loginBtn.classList.remove('hidden');
+        signupBtn.classList.remove('hidden');
+        dashboardBtn.classList.add('hidden');
+        logoutBtn.classList.add('hidden');
+      }
+    }
+
+    /* =========================
+       EXTRA PAGES (Blog/Business/Contact)
+       ========================= */
+    document.addEventListener('DOMContentLoaded', function () {
+      const extraPages = [
         {
           id: 'blog',
-          title: 'Blog & Press',
           content: `
             <section class="hero">
               <h1>Blog & Press</h1>
@@ -1044,7 +951,6 @@
         },
         {
           id: 'business',
-          title: 'Business Solutions',
           content: `
             <section class="hero">
               <h1>Business Solutions</h1>
@@ -1054,7 +960,7 @@
               <div style="text-align:center; padding:40px 0">
                 <h2>Transform Your Team with LearnHub Business</h2>
                 <p style="font-size:18px; color:#666; margin-bottom:30px">Upskill your workforce with our comprehensive corporate training programs</p>
-                <button class="btn btn-success" onclick="trackBusinessInquiry()" style="padding:15px 30px; font-size:18px">
+                <button class="btn btn-success" onclick="requestDemo()" style="padding:15px 30px; font-size:18px">
                   Request Demo
                 </button>
               </div>
@@ -1063,7 +969,6 @@
         },
         {
           id: 'contact',
-          title: 'Contact Us',
           content: `
             <section class="hero">
               <h1>Contact Us</h1>
@@ -1102,43 +1007,52 @@
         }
       ];
 
-      // Add additional pages to DOM
-      additionalPages.forEach(page => {
-        const pageDiv = document.createElement('div');
-        pageDiv.id = page.id + 'Page';
-        pageDiv.className = 'page hidden';
-        pageDiv.innerHTML = page.content;
-        document.body.appendChild(pageDiv);
+      extraPages.forEach(p => {
+        const div = document.createElement('div');
+        div.id = p.id + 'Page';
+        div.className = 'page hidden';
+        div.innerHTML = p.content;
+        document.body.appendChild(div);
       });
     });
 
-    // Additional tracking functions
     function trackBlogClick(articleId) {
-      pushEventToDataLayer('blog_article_click', {
-        article_id: articleId,
-        page_location: window.location.href
+      gtag('event', 'select_content', {
+        content_type: 'blog_article',
+        item_id: articleId
       });
     }
 
-    function trackBusinessInquiry() {
-      pushEventToDataLayer('business_demo_request', {
-        source: 'business_page'
+    function requestDemo() {
+      gtag('event', 'generate_lead', {
+        value: 0,
+        currency: CURRENCY,
+        lead_form_id: 'business_demo_button'
       });
-      alert('Thank you for your interest! Our team will contact you within 24 hours.');
+      alert('Thank you! Our team will contact you within 24 hours.');
     }
 
-    function submitContactForm(event) {
-      event.preventDefault();
+    function submitContactForm(e) {
+      e.preventDefault();
       const subject = document.getElementById('contactSubject').value;
-      
-      pushEventToDataLayer('contact_form_submit', {
-        subject: subject,
-        page_location: window.location.href
-      });
-      
-      alert('Thank you for your message! We\'ll get back to you soon.');
-      event.target.reset();
+      gtag('event', 'contact', { contact_type: subject || 'other' });
+      alert("Thank you for your message! We'll get back to you soon.");
+      e.target.reset();
     }
+
+    /* =========================
+       INIT
+       ========================= */
+    document.addEventListener('DOMContentLoaded', function () {
+      showPage('home');            // renders home and sends page_view for /home
+
+      // Close modals when clicking outside
+      document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', function (e) {
+          if (e.target === modal) closeModal(modal.id);
+        });
+      });
+    });
   </script>
 </body>
 </html>
